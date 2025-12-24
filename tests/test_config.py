@@ -10,13 +10,13 @@ class TestConfigurations:
     
     def test_pendulum_config_dataclass(self):
         """Тест, что PendulumConfig является датаклассом"""
-        from controller.config import PendulumConfig
+        from src.controller.config import PendulumConfig
         
         assert is_dataclass(PendulumConfig)
         
     def test_pendulum_config_defaults(self):
         """Тест значений по умолчанию PendulumConfig"""
-        from controller.config import PendulumConfig
+        from src.controller.config import PendulumConfig
         
         config = PendulumConfig()
         
@@ -32,7 +32,7 @@ class TestConfigurations:
         
     def test_pendulum_config_custom_values(self):
         """Тест кастомных значений PendulumConfig"""
-        from controller.config import PendulumConfig
+        from src.controller.config import PendulumConfig
         
         config = PendulumConfig(
             m_cart=2.0,
@@ -113,25 +113,42 @@ class TestConfigurations:
         assert config.Q == custom_q
 
 
-class TestCombinedConfig:
-    """Тесты объединенной конфигурации"""
-    
-    def test_combined_config_creation(self, pendulum_config, mppi_config):
+def test_combined_config_creation(self):
         """Тест создания CombinedConfig"""
-        from controller.mppi_controller import CombinedConfig
+        # Используем моки вместо реальных импортов
+        class MockPendulumConfig:
+            m_cart = 1.0
+            m_pole = 0.1
+            l = 1.0
+            g = 9.81
+            dt = 0.02
         
-        combined = CombinedConfig(pendulum_config, mppi_config)
+        class MockMPPIConfig:
+            K = 100
+            T = 20
+            lambda_ = 1.0
+            sigma = 1.0
+            Q = [1.0, 10.0, 0.1, 0.1]
+            R = 0.1
+        
+        # Используем CombinedConfig из mppi_controller
+        from src.controller.mppi_controller import CombinedConfig
+        
+        pendulum = MockPendulumConfig()
+        mppi = MockMPPIConfig()
+        
+        combined = CombinedConfig(pendulum, mppi)
         
         # Проверяем, что значения скопированы правильно
-        assert combined.m_cart == pendulum_config.m_cart
-        assert combined.m_pole == pendulum_config.m_pole
-        assert combined.l == pendulum_config.l
-        assert combined.g == pendulum_config.g
-        assert combined.dt == pendulum_config.dt
+        assert combined.m_cart == pendulum.m_cart
+        assert combined.m_pole == pendulum.m_pole
+        assert combined.l == pendulum.l
+        assert combined.g == pendulum.g
+        assert combined.dt == pendulum.dt
         
-        assert combined.K == mppi_config.K
-        assert combined.T == mppi_config.T
-        assert combined.lambda_ == mppi_config.lambda_
-        assert combined.sigma == mppi_config.sigma
-        assert combined.Q == mppi_config.Q
-        assert combined.R == mppi_config.R
+        assert combined.K == mppi.K
+        assert combined.T == mppi.T
+        assert combined.lambda_ == mppi.lambda_
+        assert combined.sigma == mppi.sigma
+        assert combined.Q == mppi.Q
+        assert combined.R == mppi.R

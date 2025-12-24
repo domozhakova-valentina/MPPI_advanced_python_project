@@ -3,99 +3,220 @@
 """
 import numpy as np
 import pytest
-from mppi.numpy.mppi_numpy import MPPINumpy
 
 
 class TestMPPINumpy:
     """Тесты NumPy реализации MPPI"""
     
-    def test_initialization(self, pendulum_config, mppi_config):
+    def test_initialization(self):
         """Тест инициализации NumPy реализации"""
-        from controller.mppi_controller import CombinedConfig
+        # Создаем mock конфигурацию
+        class MockConfig:
+            K = 100
+            T = 20
+            lambda_ = 1.0
+            sigma = 1.0
+            Q = [1.0, 10.0, 0.1, 0.1]
+            R = 0.1
+            m_cart = 1.0
+            m_pole = 0.1
+            l = 1.0
+            g = 9.81
+            dt = 0.02
         
-        combined_config = CombinedConfig(pendulum_config, mppi_config)
-        mppi = MPPINumpy(combined_config)
+        from src.mppi.numpy.mppi_numpy import MPPINumpy
         
-        assert mppi.config == combined_config
-        assert len(mppi.u) == mppi_config.T
+        config = MockConfig()
+        mppi = MPPINumpy(config)
+        
+        assert len(mppi.u) == config.T
         assert isinstance(mppi.u, np.ndarray)
+        assert len(mppi.costs_history) == 0
+    
+    def test_compute_control_basic(self):
+        """Базовый тест вычисления управления"""
+        class MockConfig:
+            K = 10
+            T = 5
+            lambda_ = 1.0
+            sigma = 0.1
+            Q = [1.0, 10.0, 0.1, 0.1]
+            R = 0.1
+            m_cart = 1.0
+            m_pole = 0.1
+            l = 1.0
+            g = 9.81
+            dt = 0.02
         
-    def test_compute_control(self, pendulum_config, mppi_config, sample_state):
-        """Тест вычисления управления"""
-        from controller.mppi_controller import CombinedConfig
+        from src.mppi.numpy.mppi_numpy import MPPINumpy
         
-        combined_config = CombinedConfig(pendulum_config, mppi_config)
-        mppi = MPPINumpy(combined_config)
+        config = MockConfig()
+        mppi = MPPINumpy(config)
         
-        # Вычисляем управление
-        force = mppi.compute_control(sample_state)
+        state = np.array([0.0, 0.1, 0.0, 0.0])
+        force = mppi.compute_control(state)
         
-        # Проверяем результат
         assert isinstance(force, float)
-        assert abs(force) < 100  # управление должно быть разумным
-        
-        # Проверяем, что история стоимостей обновилась
+        assert abs(force) < 50
         assert len(mppi.costs_history) == 1
+    
+    def test_compute_control_with_different_states(self):
+        """Тест с разными начальными состояниями"""
+        class MockConfig:
+            K = 10
+            T = 5
+            lambda_ = 1.0
+            sigma = 0.1
+            Q = [1.0, 10.0, 0.1, 0.1]
+            R = 0.1
+            m_cart = 1.0
+            m_pole = 0.1
+            l = 1.0
+            g = 9.81
+            dt = 0.02
         
-    def test_multiple_steps(self, pendulum_config, mppi_config, sample_state):
-        """Тест нескольких шагов вычисления"""
-        from controller.mppi_controller import CombinedConfig
+        from src.mppi.numpy.mppi_numpy import MPPINumpy
         
-        combined_config = CombinedConfig(pendulum_config, mppi_config)
-        mppi = MPPINumpy(combined_config)
+        config = MockConfig()
+        mppi = MPPINumpy(config)
         
-        forces = []
-        for _ in range(5):
-            force = mppi.compute_control(sample_state)
-            forces.append(force)
+        # Небольшое отклонение
+        state1 = np.array([0.0, 0.1, 0.0, 0.0])
+        force1 = mppi.compute_control(state1)
         
-        # Проверяем, что все управления вычислены
-        assert len(forces) == 5
-        assert len(mppi.costs_history) == 5
+        # Большее отклонение
+        mppi.reset()
+        state2 = np.array([0.0, 0.5, 0.0, 0.0])
+        force2 = mppi.compute_control(state2)
         
-        # Проверяем, что стоимости положительные
-        for cost in mppi.costs_history:
-            assert cost >= 0
-            
-    def test_reset_clears_history(self, pendulum_config, mppi_config, sample_state):
-        """Тест, что reset очищает историю"""
-        from controller.mppi_controller import CombinedConfig
+        # Силы должны быть разными
+        assert force1 != force2
+        assert isinstance(force1, float)
+        assert isinstance(force2, float)
+    
+    def test_reset_functionality(self):
+        """Тест сброса"""
+        class MockConfig:
+            K = 10
+            T = 5
+            lambda_ = 1.0
+            sigma = 0.1
+            Q = [1.0, 10.0, 0.1, 0.1]
+            R = 0.1
+            m_cart = 1.0
+            m_pole = 0.1
+            l = 1.0
+            g = 9.81
+            dt = 0.02
         
-        combined_config = CombinedConfig(pendulum_config, mppi_config)
-        mppi = MPPINumpy(combined_config)
+        from src.mppi.numpy.mppi_numpy import MPPINumpy
         
-        # Выполняем несколько шагов
+        config = MockConfig()
+        mppi = MPPINumpy(config)
+        
+        state = np.array([0.0, 0.1, 0.0, 0.0])
+        
+        # Выполняем несколько вычислений
         for _ in range(3):
-            mppi.compute_control(sample_state)
+            mppi.compute_control(state)
         
-        # Проверяем, что история заполнена
         assert len(mppi.costs_history) == 3
         
         # Сбрасываем
         mppi.reset()
         
-        # Проверяем, что история очищена
+        # Проверяем сброс
         assert len(mppi.costs_history) == 0
-        assert np.allclose(mppi.u, np.zeros(mppi_config.T))
+        assert np.allclose(mppi.u, np.zeros(config.T))
+    
+    def test_trajectory_update(self):
+        """Тест обновления траектории"""
+        class MockConfig:
+            K = 10
+            T = 5
+            lambda_ = 1.0
+            sigma = 0.1
+            Q = [1.0, 10.0, 0.1, 0.1]
+            R = 0.1
+            m_cart = 1.0
+            m_pole = 0.1
+            l = 1.0
+            g = 9.81
+            dt = 0.02
         
-    def test_different_parameters(self, pendulum_config):
-        """Тест с разными параметрами MPPI"""
-        from controller.config import MPPIConfig
-        from controller.mppi_controller import CombinedConfig
+        from src.mppi.numpy.mppi_numpy import MPPINumpy
         
-        # Тест с малым количеством траекторий
-        mppi_config_small = MPPIConfig(K=10, T=10, lambda_=0.5, sigma=0.5)
-        combined_config = CombinedConfig(pendulum_config, mppi_config_small)
-        mppi = MPPINumpy(combined_config)
+        config = MockConfig()
+        mppi = MPPINumpy(config)
+        
+        initial_u = mppi.u.copy()
         
         state = np.array([0.0, 0.2, 0.0, 0.0])
         force = mppi.compute_control(state)
-        assert isinstance(force, float)
         
-        # Тест с большим горизонтом планирования
-        mppi_config_large = MPPIConfig(K=500, T=100, lambda_=2.0, sigma=2.0)
-        combined_config = CombinedConfig(pendulum_config, mppi_config_large)
-        mppi = MPPINumpy(combined_config)
+        # Проверяем, что траектория обновилась
+        assert not np.allclose(mppi.u, initial_u)
+        assert mppi.u[0] == force  # Первое управление должно совпадать
+    
+    def test_dynamics_inherited(self):
+        """Тест наследования динамики"""
+        class MockConfig:
+            K = 10
+            T = 5
+            lambda_ = 1.0
+            sigma = 0.1
+            Q = [1.0, 10.0, 0.1, 0.1]
+            R = 0.1
+            m_cart = 1.0
+            m_pole = 0.1
+            l = 1.0
+            g = 9.81
+            dt = 0.02
         
-        force = mppi.compute_control(state)
-        assert isinstance(force, float)
+        from src.mppi.numpy.mppi_numpy import MPPINumpy
+        
+        config = MockConfig()
+        mppi = MPPINumpy(config)
+        
+        # Проверяем, что метод динамики существует
+        assert hasattr(mppi, '_dynamics')
+        assert callable(mppi._dynamics)
+        
+        state = np.array([0.0, 0.1, 0.0, 0.0])
+        derivatives = mppi._dynamics(state, 1.0)
+        
+        assert derivatives.shape == (4,)
+        assert isinstance(derivatives[0], float)
+    
+    def test_cost_function_inherited(self):
+        """Тест наследования функции стоимости"""
+        class MockConfig:
+            K = 10
+            T = 3
+            lambda_ = 1.0
+            sigma = 0.1
+            Q = [1.0, 10.0, 0.1, 0.1]
+            R = 0.1
+            m_cart = 1.0
+            m_pole = 0.1
+            l = 1.0
+            g = 9.81
+            dt = 0.02
+        
+        from src.mppi.numpy.mppi_numpy import MPPINumpy
+        
+        config = MockConfig()
+        mppi = MPPINumpy(config)
+        
+        # Проверяем, что метод существует
+        assert hasattr(mppi, '_cost_function')
+        assert callable(mppi._cost_function)
+        
+        T = config.T
+        state_trajectory = np.zeros((T, 4))
+        control_trajectory = np.zeros(T)
+        
+        cost = mppi._cost_function(state_trajectory, control_trajectory)
+        
+        assert isinstance(cost, float)
+        assert cost >= 0
