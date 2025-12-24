@@ -173,10 +173,6 @@ subgraph "Jupyter Environment"
 ```
 project/
 ├── src/
-│ ├── model/
-│ │ ├── init.py
-│ │ ├── pendulum_model.py # Модель маятника на Python
-│ │ └── pendulum_model.cpp # Модель маятника на C++ (для реализации на C++)
 │ ├── mppi/
 │ │ ├── init.py
 │ │ ├── base.py # Базовый класс MPPI

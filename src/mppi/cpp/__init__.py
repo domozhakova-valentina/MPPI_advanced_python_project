@@ -1,9 +1,11 @@
-from .mppi_cpp import (
-    SystemConfig,
-    MPPIConfig,
-    State,
-    InvertedPendulumModel,
-    MPPIController,
-    create_default_controller,
-    simulate_step
-)
+"""
+C++ реализация MPPI через PyBind11
+"""
+try:
+    from .mppi_cpp import MPPICpp
+    CPP_AVAILABLE = True
+except ImportError:
+    CPP_AVAILABLE = False
+    MPPICpp = None
+
+__all__ = ['MPPICpp']
