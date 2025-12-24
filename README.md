@@ -211,7 +211,6 @@ project/
 │ ├── Dockerfile
 │ └── docker-compose.yml
 ├── requirements.txt
-├── setup.py # Для компиляции C++ кода
 └── README.md
 ```
 ##  Интерфейс в Jupyter
