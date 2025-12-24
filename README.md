@@ -146,13 +146,12 @@ subgraph "Jupyter Environment"
         C
         D
         E
-        F
     end
     
     subgraph "Visualization"
+        F
         G
         H
-        I
     end
 ```
 
