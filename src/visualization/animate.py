@@ -11,31 +11,18 @@ class PendulumAnimator:
     """Класс для создания анимации маятника"""
     
     def __init__(self, 
-                 history_states: List[np.ndarray],
-                 history_controls: List[float],
-                 pendulum_length: float = 1.0):
-        """
-        Args:
-            history_states: список состояний системы
-            history_controls: список приложенных сил
-            pendulum_length: длина маятника
-        """
+                 history_states: List[np.ndarray], # список состояний системы
+                 history_controls: List[float], # список приложенных сил
+                 pendulum_length: float = 1.0): # длина маятника
+       
         self.history_states = history_states
         self.history_controls = history_controls
         self.pendulum_length = pendulum_length
         self.fig = None
         self.animation = None
     
-    def create_animation(self, interval: int = 50) -> animation.FuncAnimation:
-        """
-        Создание анимации
+    def create_animation(self, interval: int = 50) -> animation.FuncAnimation: # интервал между кадрами в мс
         
-        Args:
-            interval: интервал между кадрами в мс
-            
-        Returns:
-            Объект анимации
-        """
         self.fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(12, 8))
         
         # Настройка осей

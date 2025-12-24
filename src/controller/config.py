@@ -1,6 +1,3 @@
-"""
-Классы конфигурации (Factory Pattern)
-"""
 from dataclasses import dataclass
 from typing import List
 

@@ -12,11 +12,13 @@ except ImportError:
 import numpy as np
 from ..base import MPPIBase
 
+from combined_config import CombinedConfig
+
 
 class MPPIJax(MPPIBase):
     """MPPI реализация на JAX"""
     
-    def __init__(self, config: 'MPPIConfig'):
+    def __init__(self, config: CombinedConfig):
         if not JAX_AVAILABLE:
             raise ImportError("JAX не установлен. Установите: pip install jax jaxlib")
         
@@ -82,7 +84,7 @@ class MPPIJax(MPPIBase):
     
     def compute_control(self, state: np.ndarray) -> float:
         """
-        Вычисление управления с использованием JAX (векторизовано)
+        Вычисление управления с использованием JAX
         """
         # Конвертация в JAX массивы
         state_jax = jnp.array(state)

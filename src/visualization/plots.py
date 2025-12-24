@@ -15,11 +15,7 @@ class Plotter:
         """
         Построение графиков результатов симуляции
         
-        Args:
-            history: словарь с историей состояний, управлений и стоимостей
-            
-        Returns:
-            Объект Figure
+        history - это словарь с историей состояний, управлений и стоимостейs:
         """
         fig, axes = plt.subplots(2, 3, figsize=(15, 8))
         
@@ -79,11 +75,7 @@ class Plotter:
         """
         Построение графиков сравнения реализаций
         
-        Args:
-            metrics_dict: словарь {название_реализации: метрики}
-            
-        Returns:
-            Объект Figure
+         metrics_dict - это словарь {название_реализации: метрики}
         """
         implementations = list(metrics_dict.keys())
         metrics_names = list(metrics_dict[implementations[0]].keys())
@@ -110,11 +102,7 @@ class Plotter:
         """
         Построение графика сравнения времени выполнения
         
-        Args:
-            times_dict: словарь {название_реализации: время_выполнения}
-            
-        Returns:
-            Объект Figure
+        times_dict - словарь вида {название_реализации: время_выполнения}
         """
         fig, ax = plt.subplots(figsize=(8, 5))
         

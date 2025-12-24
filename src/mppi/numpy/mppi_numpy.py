@@ -16,10 +16,10 @@ class MPPINumpy(MPPIBase):
         # Генерация случайных возмущений
         epsilon = self.config.sigma * np.random.randn(self.config.K, self.config.T)
         
-        # Копирование текущей траектории для всех сэмплов
+        # Копирование текущей траектории
         u_expanded = self.u + np.zeros((self.config.K, self.config.T))
         
-        # Стоимости для каждого сэмпла
+        # Стоимости
         costs = np.zeros(self.config.K)
         
         # Оценка стоимости для каждой траектории
@@ -33,7 +33,7 @@ class MPPINumpy(MPPIBase):
             
             for t in range(self.config.T):
                 state_traj[t] = current_state
-                # Интегрирование динамики (метод Эйлера)
+                # Интегрирование динамики
                 derivatives = self._dynamics(current_state, u_sample[t])
                 current_state = current_state + derivatives * self.config.dt
             

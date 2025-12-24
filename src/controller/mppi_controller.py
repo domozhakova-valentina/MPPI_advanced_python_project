@@ -1,5 +1,5 @@
 """
-Единый интерфейс контроллера (Facade Pattern)
+Единый интерфейс контроллера
 """
 import numpy as np
 from typing import Dict, Any, Optional
@@ -19,9 +19,11 @@ except ImportError:
 
 from .config import MPPIConfig, PendulumConfig
 
+from ..combined_config import CombinedConfig
+
 
 class MPPIController:
-    """Фасад для управления различными реализациями MPPI"""
+    """Класс для управления различными реализациями MPPI"""
     
     _implementations = {
         'numpy': MPPINumpy,
@@ -30,15 +32,10 @@ class MPPIController:
     }
     
     def __init__(self, 
-                 pendulum_config: PendulumConfig,
-                 mppi_config: MPPIConfig,
-                 implementation: str = 'numpy'):
-        """
-        Args:
-            pendulum_config: конфигурация маятника
-            mppi_config: конфигурация алгоритма MPPI
-            implementation: 'numpy', 'jax' или 'cpp'
-        """
+                 pendulum_config: PendulumConfig, # конфигурация маятника
+                 mppi_config: MPPIConfig,         # конфигурация алгоритма MPPI
+                 implementation: str = 'numpy'):  # 'numpy', 'jax' или 'cpp'
+        
         self.pendulum_config = pendulum_config
         self.mppi_config = mppi_config
         self.implementation_name = implementation
@@ -131,20 +128,3 @@ class MPPIController:
             'avg_force': np.mean(np.abs(controls)),
             'total_cost': np.sum(self.history['costs'])
         }
-
-
-class CombinedConfig:
-    """Объединённая конфигурация для MPPI"""
-    def __init__(self, pendulum: PendulumConfig, mppi: MPPIConfig):
-        self.m_cart = pendulum.m_cart
-        self.m_pole = pendulum.m_pole
-        self.l = pendulum.l
-        self.g = pendulum.g
-        self.dt = pendulum.dt
-        
-        self.K = mppi.K
-        self.T = mppi.T
-        self.lambda_ = mppi.lambda_
-        self.sigma = mppi.sigma
-        self.Q = mppi.Q
-        self.R = mppi.R
