@@ -3,7 +3,20 @@
 """
 import numpy as np
 from typing import Dict, Any, Optional
-from ..mppi import MPPIBase, MPPINumpy, MPPIJax, MPPICpp
+
+try:
+    # Если запускаем из корня проекта
+    from mppi.base import MPPIBase
+    from mppi.numpy import MPPINumpy
+    from mppi.jax import MPPIJax
+    from mppi.cpp import MPPICpp
+except ImportError:
+    # Если запускаем из поддиректории
+    from ..mppi.base import MPPIBase
+    from ..mppi.numpy import MPPINumpy
+    from ..mppi.jax import MPPIJax
+    from ..mppi.cpp import MPPICpp
+
 from .config import MPPIConfig, PendulumConfig
 
 

@@ -4,8 +4,14 @@
 import time
 from typing import Dict, List, Any, Optional
 import numpy as np
-from ..controller import MPPIController
 
+
+try:
+    # Если запускаем из корня проекта
+    from controller import MPPIController
+except ImportError:
+    # Если запускаем из поддиректории
+    from ..controller import MPPIController
 
 class ResultsCollector:
     """Класс для сбора и агрегации результатов экспериментов"""
