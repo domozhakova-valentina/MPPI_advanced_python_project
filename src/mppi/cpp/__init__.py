@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import sys
 import os
 
@@ -28,3 +29,14 @@ else:
     print("ℹC++ модуль не скомпилирован. Запустите build_cpp.py")
 
 __all__ = ['MPPICpp']
+=======
+from .mppi_cpp import (
+    SystemConfig,
+    MPPIConfig,
+    State,
+    InvertedPendulumModel,
+    MPPIController,
+    create_default_controller,
+    simulate_step
+)
+>>>>>>> 940c7edbb053fa3bce774f825a702520c53721c0
