@@ -8,7 +8,7 @@ import numpy as np
 
 try:
     # Если запускаем из корня проекта
-    from controller import MPPIController
+    from controller.mppi_controller import MPPIController
 except ImportError:
     # Если запускаем из поддиректории
     from ..controller import MPPIController
