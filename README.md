@@ -130,13 +130,12 @@ graph TB
     B --> C[JAX Implementation]
     B --> D[NumPy Implementation]
     B --> E[C++ Implementation]
-    C --> F[Inverted Pendulum Model]
+    C --> F[Results Collector]
     D --> F
     E --> F
-    F --> G[Results Collector]
-    G --> H[Performance Analytics]
-    G --> I[Visualization Engine]
-    I --> A
+    F--> G[Performance Analytics]
+    G --> H[Visualization Engine]
+    H --> A
 
 subgraph "Jupyter Environment"
         A
