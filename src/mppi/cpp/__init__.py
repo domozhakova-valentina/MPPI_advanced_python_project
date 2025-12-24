@@ -1,19 +1,16 @@
-<<<<<<< HEAD
 import sys
 import os
+import glob
 
-# Имя файла в зависимости от ОС
-if sys.platform == "win32":
-    lib_name = "mppi_cpp.pyd"
-else:
-    lib_name = "mppi_cpp.so"
+# Найти .pyd или .so в текущей папке
+files = glob.glob(os.path.join(os.path.dirname(__file__), "mppi_cpp*.pyd")) \
+        if sys.platform == "win32" else \
+        glob.glob(os.path.join(os.path.dirname(__file__), "mppi_cpp*.so"))
 
-lib_path = os.path.join(os.path.dirname(__file__), lib_name)
-
-if os.path.exists(lib_path):
+if files:
     try:
-        # Прямой импорт скомпилированного модуля
         import importlib.util
+        lib_path = files[0]  # берём первый подходящий
         spec = importlib.util.spec_from_file_location("mppi_cpp", lib_path)
         mppi_module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mppi_module)
@@ -26,17 +23,6 @@ if os.path.exists(lib_path):
 else:
     CPP_AVAILABLE = False
     MPPICpp = None
-    print("ℹC++ модуль не скомпилирован. Запустите build_cpp.py")
+    print("ℹC++ модуль не найден. Сборка отсутствует или не завершена")
 
 __all__ = ['MPPICpp']
-=======
-from .mppi_cpp import (
-    SystemConfig,
-    MPPIConfig,
-    State,
-    InvertedPendulumModel,
-    MPPIController,
-    create_default_controller,
-    simulate_step
-)
->>>>>>> 940c7edbb053fa3bce774f825a702520c53721c0

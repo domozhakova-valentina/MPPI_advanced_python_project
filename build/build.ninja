@@ -12,7 +12,7 @@
 
 # =============================================================================
 # Project: mppi_cpp
-# Configurations: 
+# Configurations: Release
 # =============================================================================
 
 #############################################
@@ -20,6 +20,11 @@
 
 ninja_required_version = 1.5
 
+
+#############################################
+# Set configuration variable for custom commands.
+
+CONFIGURATION = Release
 # =============================================================================
 # Include auxiliary files.
 
@@ -44,22 +49,24 @@ cmake_ninja_workdir = C$:/Users/domoz/MPPI_advanced_python_project/build/
 
 build cmake_object_order_depends_target_mppi_cpp: phony || .
 
-build CMakeFiles/mppi_cpp.dir/src/mppi/cpp/mppi_cpp.cpp.obj: CXX_COMPILER__mppi_cpp_unscanned_ C$:/Users/domoz/MPPI_advanced_python_project/src/mppi/cpp/mppi_cpp.cpp || cmake_object_order_depends_target_mppi_cpp
+build CMakeFiles/mppi_cpp.dir/src/mppi/cpp/mppi_cpp.cpp.obj: CXX_COMPILER__mppi_cpp_unscanned_Release C$:/Users/domoz/MPPI_advanced_python_project/src/mppi/cpp/mppi_cpp.cpp || cmake_object_order_depends_target_mppi_cpp
+  CONFIG = Release
   DEFINES = -Dmppi_cpp_EXPORTS
   DEP_FILE = CMakeFiles\mppi_cpp.dir\src\mppi\cpp\mppi_cpp.cpp.obj.d
-  FLAGS = -std=gnu++14 -fvisibility=hidden
-  INCLUDES = -isystem C:/Users/domoz/AppData/Local/Programs/Python/Python312/Lib/site-packages/pybind11/include -isystem C:/Users/domoz/AppData/Local/Python/pythoncore-3.14-64/Include
+  FLAGS = -O3 -DNDEBUG -std=gnu++14 -fvisibility=hidden
+  INCLUDES = -isystem C:/Users/domoz/AppData/Local/Programs/Python/Python312/Lib/site-packages/pybind11/include -isystem C:/Users/domoz/AppData/Local/Programs/Python/Python312/Include
   OBJECT_DIR = CMakeFiles\mppi_cpp.dir
   OBJECT_FILE_DIR = CMakeFiles\mppi_cpp.dir\src\mppi\cpp
   TARGET_COMPILE_PDB = CMakeFiles\mppi_cpp.dir\
   TARGET_PDB = C:\Users\domoz\MPPI_advanced_python_project\src\mppi\cpp\mppi_cpp.pdb
   TARGET_SUPPORT_DIR = CMakeFiles\mppi_cpp.dir
 
-build CMakeFiles/mppi_cpp.dir/src/mppi/cpp/bindings.cpp.obj: CXX_COMPILER__mppi_cpp_unscanned_ C$:/Users/domoz/MPPI_advanced_python_project/src/mppi/cpp/bindings.cpp || cmake_object_order_depends_target_mppi_cpp
+build CMakeFiles/mppi_cpp.dir/src/mppi/cpp/bindings.cpp.obj: CXX_COMPILER__mppi_cpp_unscanned_Release C$:/Users/domoz/MPPI_advanced_python_project/src/mppi/cpp/bindings.cpp || cmake_object_order_depends_target_mppi_cpp
+  CONFIG = Release
   DEFINES = -Dmppi_cpp_EXPORTS
   DEP_FILE = CMakeFiles\mppi_cpp.dir\src\mppi\cpp\bindings.cpp.obj.d
-  FLAGS = -std=gnu++14 -fvisibility=hidden
-  INCLUDES = -isystem C:/Users/domoz/AppData/Local/Programs/Python/Python312/Lib/site-packages/pybind11/include -isystem C:/Users/domoz/AppData/Local/Python/pythoncore-3.14-64/Include
+  FLAGS = -O3 -DNDEBUG -std=gnu++14 -fvisibility=hidden
+  INCLUDES = -isystem C:/Users/domoz/AppData/Local/Programs/Python/Python312/Lib/site-packages/pybind11/include -isystem C:/Users/domoz/AppData/Local/Programs/Python/Python312/Include
   OBJECT_DIR = CMakeFiles\mppi_cpp.dir
   OBJECT_FILE_DIR = CMakeFiles\mppi_cpp.dir\src\mppi\cpp
   TARGET_COMPILE_PDB = CMakeFiles\mppi_cpp.dir\
@@ -72,16 +79,18 @@ build CMakeFiles/mppi_cpp.dir/src/mppi/cpp/bindings.cpp.obj: CXX_COMPILER__mppi_
 
 
 #############################################
-# Link the shared module C:\Users\domoz\MPPI_advanced_python_project\src\mppi\cpp\mppi_cpp.cp314-win_amd64.pyd
+# Link the shared module C:\Users\domoz\MPPI_advanced_python_project\src\mppi\cpp\mppi_cpp.cp312-win_amd64.pyd
 
-build C$:/Users/domoz/MPPI_advanced_python_project/src/mppi/cpp/mppi_cpp.cp314-win_amd64.pyd: CXX_MODULE_LIBRARY_LINKER__mppi_cpp_ CMakeFiles/mppi_cpp.dir/src/mppi/cpp/mppi_cpp.cpp.obj CMakeFiles/mppi_cpp.dir/src/mppi/cpp/bindings.cpp.obj | C$:/Users/domoz/AppData/Local/Python/pythoncore-3.14-64/libs/python314.lib
+build C$:/Users/domoz/MPPI_advanced_python_project/src/mppi/cpp/mppi_cpp.cp312-win_amd64.pyd: CXX_MODULE_LIBRARY_LINKER__mppi_cpp_Release CMakeFiles/mppi_cpp.dir/src/mppi/cpp/mppi_cpp.cpp.obj CMakeFiles/mppi_cpp.dir/src/mppi/cpp/bindings.cpp.obj | C$:/Users/domoz/AppData/Local/Programs/Python/Python312/libs/python312.lib
+  CONFIG = Release
+  LANGUAGE_COMPILE_FLAGS = -O3 -DNDEBUG
   LINK_FLAGS = -shared
-  LINK_LIBRARIES = C:/Users/domoz/AppData/Local/Python/pythoncore-3.14-64/libs/python314.lib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  LINK_LIBRARIES = C:/Users/domoz/AppData/Local/Programs/Python/Python312/libs/python312.lib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\mppi_cpp.dir
-  POST_BUILD = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Users\domoz\MPPI_advanced_python_project\build && C:\msys64\ucrt64\bin\strip.exe C:/Users/domoz/MPPI_advanced_python_project/src/mppi/cpp/mppi_cpp.cp314-win_amd64.pyd"
+  POST_BUILD = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Users\domoz\MPPI_advanced_python_project\build && C:\msys64\ucrt64\bin\strip.exe C:/Users/domoz/MPPI_advanced_python_project/src/mppi/cpp/mppi_cpp.cp312-win_amd64.pyd"
   PRE_LINK = cd .
   TARGET_COMPILE_PDB = CMakeFiles\mppi_cpp.dir\
-  TARGET_FILE = C:\Users\domoz\MPPI_advanced_python_project\src\mppi\cpp\mppi_cpp.cp314-win_amd64.pyd
+  TARGET_FILE = C:\Users\domoz\MPPI_advanced_python_project\src\mppi\cpp\mppi_cpp.cp312-win_amd64.pyd
   TARGET_IMPLIB = libmppi_cpp.dll.a
   TARGET_PDB = C:\Users\domoz\MPPI_advanced_python_project\src\mppi\cpp\mppi_cpp.pdb
   TARGET_SUPPORT_DIR = CMakeFiles\mppi_cpp.dir
@@ -113,9 +122,9 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 # Target aliases.
 
-build mppi_cpp: phony C$:/Users/domoz/MPPI_advanced_python_project/src/mppi/cpp/mppi_cpp.cp314-win_amd64.pyd
+build mppi_cpp: phony C$:/Users/domoz/MPPI_advanced_python_project/src/mppi/cpp/mppi_cpp.cp312-win_amd64.pyd
 
-build mppi_cpp.cp314-win_amd64.pyd: phony C$:/Users/domoz/MPPI_advanced_python_project/src/mppi/cpp/mppi_cpp.cp314-win_amd64.pyd
+build mppi_cpp.cp312-win_amd64.pyd: phony C$:/Users/domoz/MPPI_advanced_python_project/src/mppi/cpp/mppi_cpp.cp312-win_amd64.pyd
 
 # =============================================================================
 # Folder targets.
@@ -125,7 +134,7 @@ build mppi_cpp.cp314-win_amd64.pyd: phony C$:/Users/domoz/MPPI_advanced_python_p
 #############################################
 # Folder: C:/Users/domoz/MPPI_advanced_python_project/build
 
-build all: phony C$:/Users/domoz/MPPI_advanced_python_project/src/mppi/cpp/mppi_cpp.cp314-win_amd64.pyd
+build all: phony C$:/Users/domoz/MPPI_advanced_python_project/src/mppi/cpp/mppi_cpp.cp312-win_amd64.pyd
 
 # =============================================================================
 # Built-in targets

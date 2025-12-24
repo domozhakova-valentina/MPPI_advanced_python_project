@@ -32,6 +32,7 @@ def build_cpp():
             "-G", "Ninja",
             f"-Dpybind11_DIR={pybind11_cmake_dir}",
             f"-DPython_EXECUTABLE={sys.executable}",
+            "-DCMAKE_BUILD_TYPE=Release",
             ".."
         ]
         cmd_build = [cmake_path, "--build", "."]
